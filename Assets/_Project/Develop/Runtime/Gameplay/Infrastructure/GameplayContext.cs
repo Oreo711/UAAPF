@@ -79,6 +79,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 			if (inputString.Length == 1 && _chars.Contains(inputString[0]))
 			{
 				_input.Add(inputString[0]);
+
 				Debug.Log(inputString[0]);
 
 				if (_sequence.Length == _input.Count)

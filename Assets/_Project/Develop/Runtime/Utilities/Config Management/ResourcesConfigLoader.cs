@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Project.Develop.Runtime.Utilities.Config_Management.Configs.Scripts;
 using UnityEngine;
 
 
@@ -10,14 +11,13 @@ namespace _Project.Develop.Runtime.Utilities.Config_Management
 	{
 		private readonly ResourceLoader _resources;
 
-		private readonly Dictionary<Type, string> _paths = new()
-		{
-
-		};
+		private readonly Dictionary<Type, string> _paths = new();
 
 		public ResourcesConfigLoader (ResourceLoader resources)
 		{
 			_resources = resources;
+
+			_paths.Add(typeof(GameplayConfig), "Configs/GameplayConfig");
 		}
 
 		public IEnumerator LoadAsync (Action<Dictionary<Type, object>> onLoaded)

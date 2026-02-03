@@ -5,6 +5,7 @@ using System.ComponentModel;
 using _Project.Develop.Runtime.Infrastructure;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.Meta;
+using _Project.Develop.Runtime.Utilities.Config_Management;
 using _Project.Develop.Runtime.Utilities.Config_Management.Configs.Scripts;
 using _Project.Develop.Runtime.Utilities.SceneManagement;
 using UnityEngine;
@@ -15,7 +16,6 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 	public class GameplayBootstrap : SceneBootstrap
 	{
 		[SerializeField] private GameplayContext _context;
-		[SerializeField] private GameplayConfig  _gameplayConfig;
 
 		private DIContainer       _container;
 		private GameplayInputArgs _inputArgs;
@@ -34,7 +34,11 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
 		public override IEnumerator Initialize ()
 		{
-			_context.SetDependencies(_container.Resolve<GameState>(), _gameplayConfig,_container.Resolve<SceneSwitcherService>());
+			ConfigProviderService configProvider = _container.Resolve<ConfigProviderService>();
+
+			GameplayConfig config = configProvider.GetConfig<GameplayConfig>();
+
+			_context.SetDependencies(_container.Resolve<GameState>(), config, _container.Resolve<SceneSwitcherService>());
 			_context.Initialize();
 
 			yield break;
