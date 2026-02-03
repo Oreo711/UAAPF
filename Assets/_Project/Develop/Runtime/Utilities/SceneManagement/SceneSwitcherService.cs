@@ -21,16 +21,23 @@ namespace _Project.Develop.Runtime.Utilities.SceneManagement
 			_projectContainer = projectContainer;
 		}
 
-		public IEnumerator SwitchTo (string sceneName, IInputSceneArgs sceneArgs = null)
+		public void SwitchTo (string sceneName, IInputSceneArgs sceneArgs = null)
+		{
+			ICoroutinePerformer coroutinePerformer = _projectContainer.Resolve<ICoroutinePerformer>();
+
+			coroutinePerformer.StartCoroutine(SwitchToAsync(sceneName, sceneArgs));
+		}
+
+		public IEnumerator SwitchToAsync (string sceneName, IInputSceneArgs sceneArgs = null)
 		{
 			_loadingScreen.Show();
 
 			yield return _sceneLoader.LoadAsync(Scenes.Empty);
 			yield return _sceneLoader.LoadAsync(sceneName);
 
-			SceneBootstrap sceneBootstrap = Object.FindObjectOfType<SceneBootstrap>();
+			SceneBootstrap sceneBootstrap = Object.FindAnyObjectByType<SceneBootstrap>();
 
-			if (!sceneBootstrap)	
+			if (!sceneBootstrap)
 			{
 				throw new NullReferenceException($"{nameof(sceneBootstrap)} not found");
 			}

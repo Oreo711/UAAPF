@@ -1,5 +1,7 @@
+using _Project.Develop.Runtime.Gameplay.Infrastructure;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.Utilities.Config_Management;
+using _Project.Develop.Runtime.Utilities.Coroutine_Management;
 using _Project.Develop.Runtime.Utilities.Loading_Screen;
 using _Project.Develop.Runtime.Utilities.SceneManagement;
 using UnityEngine;
@@ -23,7 +25,11 @@ namespace _Project.Develop.Runtime.Infrastructure.Entry_Point
 			container.RegisterAsSingle<ILoadingScreen>(CreateLoadingScreen);
 
 			container.RegisterAsSingle(CreateSceneSwitcherService);
+
+			container.RegisterAsSingle(CreateGameState);
 		}
+
+		private static GameState CreateGameState (DIContainer c) => new GameState();
 
 		private static SceneSwitcherService CreateSceneSwitcherService (DIContainer c)
 		{

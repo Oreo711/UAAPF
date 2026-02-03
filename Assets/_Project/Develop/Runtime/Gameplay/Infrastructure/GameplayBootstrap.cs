@@ -1,14 +1,22 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
 using _Project.Develop.Runtime.Infrastructure;
 using _Project.Develop.Runtime.Infrastructure.DI;
+using _Project.Develop.Runtime.Meta;
+using _Project.Develop.Runtime.Utilities.Config_Management.Configs.Scripts;
 using _Project.Develop.Runtime.Utilities.SceneManagement;
+using UnityEngine;
 
 
 namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 {
 	public class GameplayBootstrap : SceneBootstrap
 	{
+		[SerializeField] private GameplayContext _context;
+		[SerializeField] private GameplayConfig  _gameplayConfig;
+
 		private DIContainer       _container;
 		private GameplayInputArgs _inputArgs;
 
@@ -16,18 +24,19 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 		{
 			_container = container;
 
-			if (sceneArgs is not GameplayInputArgs gameplayInputArgs)
+			if (sceneArgs is GameplayInputArgs inputArgs)
 			{
-				throw new ArgumentException($"{nameof(sceneArgs)} does not match with {typeof(GameplayInputArgs)} type");
+				_inputArgs = inputArgs;
 			}
-
-			_inputArgs = gameplayInputArgs;
 
 			GameplayContextRegistrations.Process(_container, _inputArgs);
 		}
 
 		public override IEnumerator Initialize ()
 		{
+			_context.SetDependencies(_container.Resolve<GameState>(), _gameplayConfig,_container.Resolve<SceneSwitcherService>());
+			_context.Initialize();
+
 			yield break;
 		}
 
@@ -37,3 +46,4 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 		}
 	}
 }
+

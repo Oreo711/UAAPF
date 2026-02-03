@@ -19,7 +19,7 @@ namespace _Project.Develop.Runtime.Infrastructure.Entry_Point
 
 			ProjectContextRegistrations.Process(projectContainer);
 
-			projectContainer.Resolve<ICoroutinePerformer>().StartPerformance(Initialize(projectContainer));
+			projectContainer.Resolve<ICoroutinePerformer>().StartCoroutine(Initialize(projectContainer));
 		}
 
 		private void SetupAppSettings ()
@@ -41,7 +41,7 @@ namespace _Project.Develop.Runtime.Infrastructure.Entry_Point
 
 			loadingScreen.Hide();
 
-			yield return sceneSwitcher.SwitchTo(Scenes.MainMenu);
+			yield return sceneSwitcher.SwitchToAsync(Scenes.MainMenu);
 		}
 	}
 }
