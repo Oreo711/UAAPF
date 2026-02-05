@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+
 using System.Linq;
 using _Project.Develop.Runtime.Meta;
 using _Project.Develop.Runtime.Utilities.Config_Management.Configs.Scripts;
@@ -19,18 +19,18 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
 		private List<char> _chars;
 		private char[]     _sequence;
-		private bool       _initialized;
+		private bool       _isSetup;
 
 		private readonly List<char> _input = new();
 
-		public void SetDependencies (GameState gameState, GameplayConfig config, SceneSwitcherService sceneSwitcher)
+		public void Initialize (GameState gameState, GameplayConfig config, SceneSwitcherService sceneSwitcher)
 		{
 			_gameState     = gameState;
 			_config        = config;
 			_sceneSwitcher = sceneSwitcher;
 		}
 
-		public void Initialize ()
+		public void Setup ()
 		{
 			_chars = GetChars();
 
@@ -44,7 +44,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
 			Debug.Log(new string(_sequence));
 
-			_initialized = true;
+			_isSetup = true;
 		}
 
 		private List<char> GetChars ()
@@ -68,7 +68,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
 		private void Update ()
 		{
-			if (!_initialized)
+			if (!_isSetup)
 				return;
 
 			if (!Input.anyKeyDown)

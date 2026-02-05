@@ -38,8 +38,11 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
 			GameplayConfig config = configProvider.GetConfig<GameplayConfig>();
 
-			_context.SetDependencies(_container.Resolve<GameState>(), config, _container.Resolve<SceneSwitcherService>());
-			_context.Initialize();
+			_context.Initialize(
+				_container.Resolve<GameState>(),
+				config,
+				_container.Resolve<SceneSwitcherService>());
+			_context.Setup();
 
 			yield break;
 		}
