@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 {
-	public class GameplayContext : MonoBehaviour
+	public class Gameplay : MonoBehaviour
 	{
 		private GameState            _gameState;
 		private GameplayConfig       _config;

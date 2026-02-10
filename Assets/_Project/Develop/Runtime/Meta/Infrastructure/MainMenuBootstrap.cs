@@ -11,10 +11,11 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
 {
 	public class MainMenuBootstrap : SceneBootstrap
 	{
-		private DIContainer          _container;
-		private ICoroutinePerformer  _coroutinePerformer;
-		private GameState            _gameState;
-		private SceneSwitcherService _sceneSwitcher;
+		private DIContainer              _container;
+		private ICoroutinePerformer      _coroutinePerformer;
+		private GameState                _gameState;
+		private SceneSwitcherService     _sceneSwitcher;
+		private GameModeSelectionService _gameModeSelectionService;
 
 		public override void ProcessRegistrations (DIContainer container, IInputSceneArgs sceneArgs = null)
 		{
@@ -25,9 +26,10 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
 
 		public override IEnumerator Initialize ()
 		{
-			_sceneSwitcher      = _container.Resolve<SceneSwitcherService>();
-			_coroutinePerformer = _container.Resolve<ICoroutinePerformer>();
-			_gameState          = _container.Resolve<GameState>();
+			_sceneSwitcher            = _container.Resolve<SceneSwitcherService>();
+			_coroutinePerformer       = _container.Resolve<ICoroutinePerformer>();
+			_gameState                = _container.Resolve<GameState>();
+			_gameModeSelectionService = _container.Resolve<GameModeSelectionService>();
 
 			yield break;
 		}
@@ -35,25 +37,8 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
 		public override void Run ()
 		{
 			Debug.Log("Choose game mode. (1-numbers, 2-letters)");
-		}
 
-		private void Update ()
-		{
-			if (Input.GetKeyDown(KeyCode.Alpha1))
-			{
-				_coroutinePerformer.StartCoroutine(ProcessStartGameplay(GameMode.numbers));
-			}
-			else if (Input.GetKeyDown(KeyCode.Alpha2))
-			{
-				_coroutinePerformer.StartCoroutine(ProcessStartGameplay(GameMode.letters));
-			}
-		}
-
-		private IEnumerator ProcessStartGameplay (GameMode gameMode)
-		{
-			_gameState.SetGameMode(gameMode);
-
-			yield return _sceneSwitcher.SwitchToAsync(Scenes.Gameplay);
+			_gameModeSelectionService.Run();
 		}
 	}
 }

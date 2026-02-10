@@ -15,7 +15,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 {
 	public class GameplayBootstrap : SceneBootstrap
 	{
-		[SerializeField] private GameplayContext _context;
+		[SerializeField] private Gameplay _context;
 
 		private DIContainer       _container;
 		private GameplayInputArgs _inputArgs;
